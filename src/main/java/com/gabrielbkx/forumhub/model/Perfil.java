@@ -1,11 +1,8 @@
 package com.gabrielbkx.forumhub.model;
 
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.util.Set;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "perfis")
@@ -13,15 +10,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Perfil {
+public class Perfil implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String nome;
+    private String nome; // ex: "ROLE_ADMIN", "ROLE_USER"
 
-    @ManyToMany(mappedBy = "perfis")
-    private Set<Usuario> usuarios;
+    @Override
+    public String getAuthority() {
+        return nome;
+    }
 }

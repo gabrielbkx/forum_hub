@@ -3,7 +3,6 @@ package com.gabrielbkx.forumhub.infra.security;
 
 import com.gabrielbkx.forumhub.model.Usuario;
 import com.gabrielbkx.forumhub.repository.UsuarioRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,13 +22,10 @@ public class AutenticacaoService implements UserDetailsService {
         Usuario usuario = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return User.builder()
-                .username(usuario.getEmail())
-                .password(usuario.getSenha())
-                .authorities(usuario.getPerfis()
-                        .stream()
-                        .map(perfil -> perfil.getNome())
-                        .toArray(String[]::new))
-                .build();
+        System.out.println("Usuário encontrado: " + usuario.getEmail());
+        System.out.println("Senha hash: " + usuario.getSenha());
+
+        return usuario;
     }
+
 }
