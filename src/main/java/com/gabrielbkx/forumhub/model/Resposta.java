@@ -1,6 +1,8 @@
 package com.gabrielbkx.forumhub.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -29,9 +31,12 @@ public class Resposta {
 
     @ManyToOne
     @JoinColumn(name = "topico_id", nullable = false)
+    @JsonBackReference
     private Topico topico;
 
     @ManyToOne
     @JoinColumn(name = "autor_id", nullable = false)
+    @JsonManagedReference
     private Usuario autor;
+
 }

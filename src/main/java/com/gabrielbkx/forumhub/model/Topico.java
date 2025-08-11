@@ -1,6 +1,8 @@
 package com.gabrielbkx.forumhub.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Topico {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,14 +38,16 @@ public class Topico {
     // Muitos tópicos para um autor
     @ManyToOne
     @JoinColumn(name = "autor_id", nullable = false)
+    @JsonBackReference  // evita ciclo ao serializar
     private Usuario autor;
 
     // Muitos tópicos para um curso
     @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
+    @JsonBackReference(value = "curso-topicos")
     private Curso curso;
 
-    // Um tópico pode ter várias respostas
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Resposta> respostas;
 }
